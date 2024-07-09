@@ -1,57 +1,72 @@
 'use client';
 
-import Link from 'next/link';
+import Link from "next/link";
 
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from 'zod';
 
-import { login } from '@/utils/supabase/auth';
+import { register } from "@/utils/supabase/auth";
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 
 const formSchema = z.object({
+    name: z.string(),
     email: z.string().email().min(1, { message: 'Email tidak boleh kosong' }),
-    password: z.string().min(6, { message: 'Password minimal terdiri dari 6 karakter' })
+    password: z.string().min(6, { message: 'Password harus terdiri dari 6 huruf' })
 })
 
-const Login = () => {
+const Register = () => {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            name: "Petani Replon",
             email: '',
             password: ''
         }
     });
 
-    const handleLogin = async (data) => {
+    const onSubmit = async (data) => {
         const formData = new FormData();
+        formData.append('name', data.name);
         formData.append('email', data.email);
         formData.append('password', data.password);
 
-        await login(formData);
+        await register(formData);
     }
 
     return (
         <>
-            <div className="flex flex-col gap-y-2">
-                <h1 className="text-4xl font-bold max-w-1/2">Selamat Datang Kembali!</h1>
-                <p className="text-slate-400">Silahkan masuk akun anda untuk mengakses fitur aplikasi Replon</p>
-            </div>
-
+            <h3 className='text-xl font-bold'>Data Petani</h3>
             <Form {...form} >
-                <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Nama</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Ketikkan nama anda" {...field} type="text"/>
+                                </FormControl>
+                                <FormDescription>
+                                    Nama akan ditampilkan pada halaman beranda anda.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name="email"
@@ -62,7 +77,7 @@ const Login = () => {
                                     <Input placeholder="Ketikkan email anda (cth: replon@gmail.com)" {...field} type="email"/>
                                 </FormControl>
                                 <FormDescription>
-                                    Email wajib diisi
+                                    Email digunakan sebagai kredensial login.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -78,19 +93,19 @@ const Login = () => {
                                     <Input placeholder="Ketikkan password anda" {...field} type="password"/>
                                 </FormControl>
                                 <FormDescription>
-                                    Sandi terdiri dari minimal 6 huruf, wajib diisi.
+                                    Sandi terdiri dari minimal 6 huruf, digunakan sebagai kredensial login.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full">Masuk Akun</Button>
+                    <Button type="submit" className="w-full">Daftar Akun</Button>
                 </form>
             </Form>
 
-            <Link href={'/auth/register'} className="text-slate-700 text-center">Belum mempunyai akun? <span className="font-bold text-primary">Buat akun disini</span></Link>
+            <Link href={'/auth/login'} className="text-slate-700 text-center">Sudah mempunyai akun? <span className="font-bold text-primary">Login disini</span></Link>
         </>
     )
 }
 
-export default Login;
+export default Register;
