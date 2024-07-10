@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 import Image from 'next/image';
 import Link from 'next/link';
