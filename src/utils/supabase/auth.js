@@ -19,7 +19,7 @@ export async function login(formData) {
         redirect('/error');
     }
 
-    revalidatePath('/home', 'layout');
+    revalidatePath('/');
     redirect('/home');
 }
 
@@ -40,7 +40,7 @@ export async function register(formData) {
         redirect('/error');
     }
 
-    revalidatePath('/register/greenhouse', 'layout');
+    revalidatePath('/', 'layout');
     redirect('/auth/register/greenhouse');
 }
 
