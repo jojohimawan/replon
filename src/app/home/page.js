@@ -31,10 +31,11 @@ const Home = async () => {
     const { data: user, error: userError } = await supabase.auth.getUser();
 
     if(userError || !user) {
-        redirect('/auth/login');
+        console.error('user fetch error: ', userError);
+        return redirect('/auth/login');
     }
 
-    console.log(user);
+    // console.log(user);
 
     const { data: greenhouses, error: greenhousesError } = await supabase
         .from('greenhouse')
@@ -44,7 +45,8 @@ const Home = async () => {
     if(greenhouses) {
         console.log(greenhouses)
     } else {
-        console.log(greenhousesError);
+        console.error('gh fetch error: ', greenhousesError);
+        return redirect('/error')
     }
 
     const { getCurrentDate } = dateLibs();
