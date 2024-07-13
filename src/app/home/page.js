@@ -1,32 +1,33 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-import { createClient } from "@/utils/supabase/server";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { getUser } from '@/utils/supabase/auth';
+import { fethGreenhouseByUserId } from '@/utils/supabase/queries';
 
 import HomePage from '@/components/custom/HomePage';
 
+export default function Home() {
+    const [user, setUser] = useState(null);
+    const [greenhouses, setGreenhouses] = useState([]);
+    const router = useRouter();
 
-export default async function Home() {
-    const supabase = createClient();
-    const { data: user, error: userError } = await supabase.auth.getUser();
+    useEffect(() => {
+        (async function () {
+            const user = await getUser();
+            if (!user) {
+                router.push('/auth/login');
+                return;
+            }
 
-    if(userError || !user) {
-        console.error('user fetch error: ', userError);
-        return redirect('/auth/login');
-    }
+            setUser(user);
+            const greenhouses = await fethGreenhouseByUserId(user.user.id);
+            setGreenhouses(greenhouses);
+        })();
+    }, [router]);
 
-    // console.log(user);
-
-    const { data: greenhouses, error: greenhousesError } = await supabase
-        .from('greenhouse')
-        .select()
-        .eq('id_petani', user.user.id);
-
-    if(greenhouses) {
-        // console.log(greenhouses)
-    } else {
-        console.error('gh fetch error: ', greenhousesError);
-        return redirect('/error');
-    }
+    if (!user) return <div>Loading...</div>;  // Show a loading state while fetching data
 
     return (
         <HomePage user={user} greenhouses={greenhouses} />

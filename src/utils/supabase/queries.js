@@ -79,6 +79,21 @@ export async function insertTanam(tanams) {
     redirect('/home');
 }
 
+export async function fethGreenhouseByUserId(userId) {
+    const supabase = createClient();
+    const { data: greenhouses, error: greenhousesError } = await supabase
+        .from('greenhouse')
+        .select()
+        .eq('id_petani', userId);
+    
+    if(greenhousesError || !greenhouses) {
+        console.error('gh fetch error: ', greenhousesError);
+        return;
+    }
+
+    return greenhouses;
+}
+
 export async function fetchGreenhouseById(greenhouseId) {
     const supabase = createClient();
     const { data, error } = await supabase

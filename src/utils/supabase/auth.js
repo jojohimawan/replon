@@ -23,6 +23,17 @@ export async function login(formData) {
     redirect('/home');
 }
 
+export async function getUser() {
+    const { data: user, error: userError } = await supabase.auth.getUser();
+    
+    if(userError || !user) {
+        console.error('user fetch error: ', userError);
+        return redirect('/auth/login');
+    }
+
+    return user;
+}
+
 export async function register(formData) {
     const data = {
         email: formData.get('email'),
