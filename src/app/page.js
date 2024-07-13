@@ -1,20 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from 'next/navigation';
-
-import { createClient } from "@/utils/supabase/server";
 
 import heroSvg from "@/assets/hero_farm.svg"
 import { Button } from "@/components/ui/button";
 
 export default async function App() {
-  const supabase = createClient();
-  const { data: user, error: userError } = await supabase.auth.getUser();
-
-  if(!userError || user) {
-      redirect('/home');
-  }
-
   return (
     <>
       <p className="text-xl font-bold text-center">🍈 Replon App</p>
