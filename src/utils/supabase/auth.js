@@ -16,6 +16,7 @@ export async function login(formData) {
     const { error } = await supabase.auth.signInWithPassword(data);
 
     if(error) {
+        console.error('error login: ', error);
         redirect('/error');
     }
 
@@ -48,10 +49,11 @@ export async function register(formData) {
     const { error } = await supabase.auth.signUp(data);
 
     if(error) {
+        console.error('error registering: ', error);
         redirect('/error');
     }
 
-    revalidatePath('/', 'layout');
+    revalidatePath('/');
     redirect('/auth/register/greenhouse');
 }
 
@@ -59,9 +61,10 @@ export async function logout() {
     const { error } = await supabase.auth.signOut();
 
     if(error) {
+        console.error('error logout: ', error)
         redirect('/error');
     }
 
-    revalidatePath('/', 'layout');
+    revalidatePath('/');
     redirect('/');
 }
