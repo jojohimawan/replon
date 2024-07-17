@@ -7,13 +7,16 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function insertGreenhouse(greenhouses) {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: user, error: userError } = await supabase.auth.getUser()
 
-    console.log(user);
+    if(userError) {
+        console.error('[AUTH] error insert greenhouse: ', userError);
+        return redirect('/error');
+    }
 
     const greenhouseData = greenhouses.map(greenhouse => ({
         ...greenhouse,
-        id_petani: user.id
+        id_petani: user.user.id
     }));
 
     const { data, error } = await supabase
@@ -21,12 +24,11 @@ export async function insertGreenhouse(greenhouses) {
         .insert(greenhouseData);
 
     if(error) {
-        throw new Error(error.message);
+        console.error('[PG] error insert greenhouse: ', error);
+        return redirect('/error');
     }
 
-    console.log(data);
-
-    revalidatePath('/home', 'layout');
+    revalidatePath('/');
     redirect('/home');
 }
 
