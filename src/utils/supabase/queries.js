@@ -9,10 +9,11 @@ export async function insertGreenhouse(greenhouses) {
     const supabase = createClient();
     const { data: user, error: userError } = await supabase.auth.getUser()
 
-    if(userError) {
+    if(!user || user === null) {
         console.error('[AUTH] error insert greenhouse: ', userError);
         return redirect('/error');
     }
+    console.log(user);
 
     const greenhouseData = greenhouses.map(greenhouse => ({
         ...greenhouse,
