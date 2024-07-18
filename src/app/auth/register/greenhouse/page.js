@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -22,7 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { PlusIcon, MinusIcon } from '@radix-ui/react-icons';
+import { PlusIcon, MinusIcon, ReloadIcon } from '@radix-ui/react-icons';
 
 const greenhouseSchema = z.object({
     nama_gh: z.string().min(1, { message: 'Nama greenhouse tidak boleh kosong' }),
@@ -34,6 +36,8 @@ const formSchema = z.object({
 });
 
 const Greenhouse = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const { control, handleSubmit } = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -47,6 +51,7 @@ const Greenhouse = () => {
     });
 
     const onSubmit = async (data) => {
+        setIsLoading(true);
         const userId = await getUser();
 
         const greenhousesData = data.greenhouses.map(greenhouse => ({
@@ -55,6 +60,7 @@ const Greenhouse = () => {
         }));
 
         await insertGreenhouse(greenhousesData);
+        setIsLoading(false);
     }
 
     return (
@@ -111,7 +117,15 @@ const Greenhouse = () => {
                         >
                             <PlusIcon /> &emsp;Tambah Greenhouse
                         </Button>
-                        <Button type="submit" className="w-full mt-4">Daftar Akun</Button>
+                        <Button type="submit" className="w-full mt-4">
+                        {isLoading ? (
+                        <>
+                            Mohon tunggu &emsp; <ReloadIcon className="animate-spin" /> 
+                        </>
+                        ) : (
+                            'Selesaikan Pendaftaran Akun'
+                        )}
+                        </Button>
                     </form>
                 </Form>
 

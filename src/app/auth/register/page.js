@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from "react";
+
 import Link from "next/link";
 
 import { useForm } from "react-hook-form";
@@ -21,6 +23,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import { ReloadIcon } from "@radix-ui/react-icons";
+
 const formSchema = z.object({
     name: z.string(),
     email: z.string().email().min(1, { message: 'Email tidak boleh kosong' }),
@@ -28,6 +32,8 @@ const formSchema = z.object({
 })
 
 const Register = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -38,12 +44,14 @@ const Register = () => {
     });
 
     const onSubmit = async (data) => {
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('email', data.email);
         formData.append('password', data.password);
 
         await register(formData);
+        setIsLoading(false);
     }
 
     return (
@@ -99,7 +107,15 @@ const Register = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full">Daftar Akun</Button>
+                    <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? (
+                        <>
+                            Mohon tunggu &emsp; <ReloadIcon className="animate-spin" /> 
+                        </>
+                    ) : (
+                        'Daftar Akun'
+                    )}
+                    </Button>
                 </form>
             </Form>
 

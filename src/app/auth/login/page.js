@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 
 import { useForm } from "react-hook-form";
@@ -21,12 +23,16 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 
+import { ReloadIcon } from '@radix-ui/react-icons';
+
 const formSchema = z.object({
     email: z.string().email().min(1, { message: 'Email tidak boleh kosong' }),
     password: z.string().min(6, { message: 'Password minimal terdiri dari 6 karakter' })
 })
 
 const Login = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -36,11 +42,13 @@ const Login = () => {
     });
 
     const handleLogin = async (data) => {
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('email', data.email);
         formData.append('password', data.password);
 
         await login(formData);
+        setIsLoading(false);
     }
 
     return (
@@ -84,7 +92,15 @@ const Login = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full">Masuk Akun</Button>
+                    <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? (
+                        <>
+                            Mohon tunggu &emsp; <ReloadIcon className="animate-spin" /> 
+                        </>
+                    ) : (
+                        'Masuk Akun'
+                    )}
+                    </Button>
                 </form>
             </Form>
 
