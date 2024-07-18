@@ -7,6 +7,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from 'zod';
 
+import { getUser } from '@/utils/supabase/auth';
 import { insertGreenhouse } from '@/utils/supabase/queries';
 
 import { Button } from '@/components/ui/button';
@@ -46,7 +47,14 @@ const Greenhouse = () => {
     });
 
     const onSubmit = async (data) => {
-        await insertGreenhouse(data.greenhouses);
+        const userId = await getUser();
+
+        const greenhousesData = data.greenhouses.map(greenhouse => ({
+            ...greenhouse,
+            id_petani: userId.user.id
+        }));
+
+        await insertGreenhouse(greenhousesData);
     }
 
     return (
