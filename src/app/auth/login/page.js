@@ -23,7 +23,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 
-import { ReloadIcon } from '@radix-ui/react-icons';
+import { ReloadIcon, EyeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons';
 
 const formSchema = z.object({
     email: z.string().email().min(1, { message: 'Email tidak boleh kosong' }),
@@ -32,6 +32,7 @@ const formSchema = z.object({
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -83,7 +84,19 @@ const Login = () => {
                             <FormItem>
                                 <FormLabel>Kata sandi</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ketikkan password anda" {...field} type="password"/>
+                                <div className="flex space-x-1">
+                                        <Input placeholder="Ketikkan password anda" {...field} type={showPassword ? "text" : "password"}/>
+                                        <Button 
+                                            size='icon' 
+                                            variant='ghost' 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setShowPassword(!showPassword);
+                                            }}
+                                        >
+                                            {showPassword ? <EyeOpenIcon/> : <EyeClosedIcon/>}
+                                        </Button>
+                                    </div>
                                 </FormControl>
                                 <FormDescription>
                                     Sandi terdiri dari minimal 6 huruf, wajib diisi.

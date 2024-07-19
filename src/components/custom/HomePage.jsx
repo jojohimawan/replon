@@ -20,6 +20,7 @@ import { HomeSection } from '@/components/section/Section';
 import { Button } from '@/components/ui/button';
 
 import { HomeLogoutBtn } from '@/components/custom/HomeLogoutBtn';
+import { EmptyTabContent } from './EmptyTabContent';
 
 import { DrawingPinFilledIcon, BlendingModeIcon, CubeIcon, HobbyKnifeIcon, ScissorsIcon, SunIcon } from '@radix-ui/react-icons';
 
@@ -113,32 +114,39 @@ export default function HomePage({ user, greenhouses }) {
                     </div>
                 </section>
 
-                <HomeSection className='flex-col gap-y-3'>
+                <HomeSection className='flex-col gap-y-3 h-full'>
                     <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
                         Daftar Greenhouse 🏡
                     </h4>
 
-                    <section className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-5 md:justify-center overflow-y-auto" >
-                        {
-                            greenhouses.map((greenhouse, i) => (
-                                <Link href={`/greenhouse/${greenhouse.id}`} key={i}>
-                                    <Card className="w-full pt-6" >
-                                        <CardContent className=''>
-                                            <Image
-                                            src={greenhouseImage}
-                                            alt="Greenhouse Image"
-                                            className="w-full object-cover hover:scale-105 transition-all rounded-lg"
-                                            width={200}
-                                            height={200}
-                                            />
-                                        </CardContent>
-                                        <CardFooter className='flex-col w-full gap-y-2'>
-                                            <CardTitle className="w-full ">{greenhouse.nama_gh}</CardTitle>
-                                            <CardDescription className='w-full flex items-center gap-x-2'><DrawingPinFilledIcon/> {greenhouse.lokasi}</CardDescription>
-                                        </CardFooter>
-                                    </Card>
-                                </Link>
-                            ))
+                    <section className={`w-full h-full md:justify-center overflow-y-auto ${greenhouses.length === 0 ? '' : 'grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-5'}`} >
+                        {greenhouses.length === 0 ? (
+                            <EmptyTabContent 
+                                title='data Greenhouse tercatat'
+                                url='/auth/register/greenhouse'
+                                btnPlaceholder='Tambahkan Greenhouse disini'
+                            />
+                            ) : (
+                                greenhouses.map((greenhouse, i) => (
+                                    <Link href={`/greenhouse/${greenhouse.id}`} key={i}>
+                                        <Card className="w-full pt-6" >
+                                            <CardContent className=''>
+                                                <Image
+                                                src={greenhouseImage}
+                                                alt="Greenhouse Image"
+                                                className="w-full object-cover hover:scale-105 transition-all rounded-lg"
+                                                width={200}
+                                                height={200}
+                                                />
+                                            </CardContent>
+                                            <CardFooter className='flex-col w-full gap-y-2'>
+                                                <CardTitle className="w-full ">{greenhouse.nama_gh}</CardTitle>
+                                                <CardDescription className='w-full flex items-center gap-x-2'><DrawingPinFilledIcon/> {greenhouse.lokasi}</CardDescription>
+                                            </CardFooter>
+                                        </Card>
+                                    </Link>
+                                ))
+                            )
                         }
                     </section>
                 </HomeSection>

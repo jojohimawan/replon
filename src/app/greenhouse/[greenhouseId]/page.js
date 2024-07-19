@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import dateLibs from "@/lib/date";
+
 import {
     fetchGreenhouseById,
     fetchTanamAndVarietasByGreenhouseId,
@@ -34,6 +36,7 @@ import {
     TabsTrigger,
   } from "@/components/ui/tabs";
 import GreenhouseTabContent from "@/components/custom/GreenhouseTabContent";
+import { EmptyTabContent } from "@/components/custom/EmptyTabContent";
 
 import greenhouse from "../../../../public/greenhouse.png";
 
@@ -49,6 +52,8 @@ export default async function GreenhousePage({ params }) {
     const tanamDatas = await fetchTanamAndVarietasByGreenhouseId(params.greenhouseId);
     const panenDatas = await fetchPanenAndVarietasByGreenhouseId(params.greenhouseId);
     const penyakitDatas = await fetchEventAndPenyakitByGreenhouseId(params.greenhouseId);
+
+    const { formatDateTime } = dateLibs();
 
     return (
         <>
@@ -93,14 +98,14 @@ export default async function GreenhousePage({ params }) {
                 </section>
 
                 <section className="w-full">
-                    <Card className='w-full hover:bg-green-500'>
+                    <Card className='w-full group hover:bg-green-500'>
                         <CardContent className='flex flex-row justify-between items-center pt-6 text-white'>
                             <div className='flex flex-col h-full gap-y-2'>
                                 <div className="p-4 text-xl bg-green-50 text-primary max-w-max rounded-full">
                                     <BlendingModeIcon />
                                 </div>
-                                <CardTitle className='scroll-m-20 text-2xl font-semibold tracking-tight text-primary hover:text-white'>Kontrol Keran Air</CardTitle>
-                                <CardDescription className='text-slate-500 hover:text-white'>Status: Mati</CardDescription>
+                                <CardTitle className='scroll-m-20 text-2xl font-semibold tracking-tight text-primary group-hover:text-white'>Kontrol Keran Air</CardTitle>
+                                <CardDescription className='text-slate-500 group-hover:text-white'>Status: Mati</CardDescription>
                             </div>
 
                             <GreenhouseSwitch switchProps={false}/>
@@ -109,7 +114,7 @@ export default async function GreenhousePage({ params }) {
                     </Card>
                 </section>
 
-                <section className="w-full overflow-hidden">
+                <section className="w-full overflow-hidden h-full">
                     <Tabs defaultValue="tanam" className="w-full h-full">
                         <TabsList className="grid grid-cols-3">
                             <TabsTrigger value="tanam">Tanam</TabsTrigger>
@@ -117,39 +122,59 @@ export default async function GreenhousePage({ params }) {
                             <TabsTrigger value="event">Penyakit</TabsTrigger>
                         </TabsList>
                         <TabsContent value="tanam" className="h-full overflow-y-auto space-y-2">
-                            {
-                                tanamDatas.map((tanam, i) => (
-                                    <GreenhouseTabContent 
-                                        key={i}
-                                        title={tanam.varietas.nama_varietas} 
-                                        count={tanam.jumlah_tanaman} 
-                                        time={tanam.waktu_tanam} 
-                                    />
-                                ))
+                            {tanamDatas.length === 0 ? (
+                                <EmptyTabContent 
+                                    title='data tanam pada Greenhouse ini'
+                                    url={`/tanam/${params.greenhouseId}`}
+                                    btnPlaceholder='Catat event tanam disini'
+                                />
+                                ) : (
+                                    tanamDatas.map((tanam, i) => (
+                                        <GreenhouseTabContent 
+                                            key={i}
+                                            title={tanam.varietas.nama_varietas} 
+                                            count={tanam.jumlah_tanaman} 
+                                            time={formatDateTime(tanam.waktu_tanam)} 
+                                        />
+                                    ))
+                                )
                             }
                         </TabsContent>
                         <TabsContent value="panen" className="h-full overflow-y-auto space-y-2">
-                            {
-                                panenDatas.map((panen, i) => (
-                                    <GreenhouseTabContent 
-                                        key={i}
-                                        title={panen.varietas.nama_varietas}
-                                        count={panen.jumlah_produksi}
-                                        time={panen.waktu_panen}
-                                    />
-                                ))
+                            {panenDatas.length === 0 ? (
+                                <EmptyTabContent 
+                                    title='data penyakit pada Greenhouse ini'
+                                    url={`/panen/${params.greenhouseId}`}
+                                    btnPlaceholder='Catat event penyakit disini'
+                                />
+                                ) : (
+                                    panenDatas.map((panen, i) => (
+                                        <GreenhouseTabContent 
+                                            key={i}
+                                            title={panen.varietas.nama_varietas}
+                                            count={panen.jumlah_produksi}
+                                            time={formatDateTime(panen.waktu_panen)}
+                                        />
+                                    ))
+                                )
                             }
                         </TabsContent>
                         <TabsContent value="event" className="h-full overflow-y-auto space-y-2">
-                            {
-                                penyakitDatas.map((penyakit, i) => (
-                                    <GreenhouseTabContent 
-                                        key={i}
-                                        title={penyakit.penyakit.nama_penyakit}
-                                        count=''
-                                        time={penyakit.created_at}
-                                    />
-                                ))
+                            {penyakitDatas.length === 0 ? (
+                                <EmptyTabContent 
+                                    title='data panen pada Greenhouse ini'
+                                    url={`/event/${params.greenhouseId}`}
+                                    btnPlaceholder='Catat event panen disini'
+                                />
+                                ) : (
+                                    penyakitDatas.map((penyakit, i) => (
+                                        <GreenhouseTabContent 
+                                            key={i}
+                                            title={penyakit.penyakit.nama_penyakit}
+                                            time={formatDateTime(penyakit.created_at)}
+                                        />
+                                    ))
+                                )
                             }
                         </TabsContent>
                     </Tabs>
