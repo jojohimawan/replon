@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 
 import { useForm } from "react-hook-form";
@@ -21,12 +23,17 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 
+import { ReloadIcon, EyeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons';
+
 const formSchema = z.object({
     email: z.string().email().min(1, { message: 'Email tidak boleh kosong' }),
     password: z.string().min(6, { message: 'Password minimal terdiri dari 6 karakter' })
 })
 
 const Login = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -36,11 +43,13 @@ const Login = () => {
     });
 
     const handleLogin = async (data) => {
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('email', data.email);
         formData.append('password', data.password);
 
         await login(formData);
+        setIsLoading(false);
     }
 
     return (
@@ -75,7 +84,19 @@ const Login = () => {
                             <FormItem>
                                 <FormLabel>Kata sandi</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ketikkan password anda" {...field} type="password"/>
+                                <div className="flex space-x-1">
+                                        <Input placeholder="Ketikkan password anda" {...field} type={showPassword ? "text" : "password"}/>
+                                        <Button 
+                                            size='icon' 
+                                            variant='ghost' 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setShowPassword(!showPassword);
+                                            }}
+                                        >
+                                            {showPassword ? <EyeOpenIcon/> : <EyeClosedIcon/>}
+                                        </Button>
+                                    </div>
                                 </FormControl>
                                 <FormDescription>
                                     Sandi terdiri dari minimal 6 huruf, wajib diisi.
@@ -84,7 +105,15 @@ const Login = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full">Masuk Akun</Button>
+                    <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? (
+                        <>
+                            Mohon tunggu &emsp; <ReloadIcon className="animate-spin" /> 
+                        </>
+                    ) : (
+                        'Masuk Akun'
+                    )}
+                    </Button>
                 </form>
             </Form>
 

@@ -19,7 +19,7 @@ export default function GreenhouseTabContent({ title, count, time }) {
             <CardHeader className='w-4/6'>
                 <CardTitle>{title}</CardTitle>
                 {
-                    count === '' ? '' : <CardDescription>{`Jumlah Tercatat: ${count}`}</CardDescription>
+                    count === undefined ? '' : <CardDescription>{`Jumlah Tercatat: ${count}`}</CardDescription>
                 }
                 <CardDescription>{`Waktu Catat: ${time}`}</CardDescription>
             </CardHeader>
