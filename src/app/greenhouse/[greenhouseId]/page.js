@@ -143,9 +143,9 @@ export default async function GreenhousePage({ params }) {
                         <TabsContent value="panen" className="h-full overflow-y-auto space-y-2">
                             {panenDatas.length === 0 ? (
                                 <EmptyTabContent 
-                                    title='data penyakit pada Greenhouse ini'
+                                    title='data panen pada Greenhouse ini'
                                     url={`/panen/${params.greenhouseId}`}
-                                    btnPlaceholder='Catat event penyakit disini'
+                                    btnPlaceholder='Catat event panen disini'
                                 />
                                 ) : (
                                     panenDatas.map((panen, i) => (
@@ -162,9 +162,9 @@ export default async function GreenhousePage({ params }) {
                         <TabsContent value="event" className="h-full overflow-y-auto space-y-2">
                             {penyakitDatas.length === 0 ? (
                                 <EmptyTabContent 
-                                    title='data panen pada Greenhouse ini'
+                                    title='data penyakit pada Greenhouse ini'
                                     url={`/event/${params.greenhouseId}`}
-                                    btnPlaceholder='Catat event panen disini'
+                                    btnPlaceholder='Catat event penyakit disini'
                                 />
                                 ) : (
                                     penyakitDatas.map((penyakit, i) => (
