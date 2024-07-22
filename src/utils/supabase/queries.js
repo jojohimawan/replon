@@ -70,7 +70,7 @@ export async function insertTanam(tanams) {
     redirect('/home');
 }
 
-export async function fethGreenhouseByUserId(userId) {
+export async function fetchGreenhouseByUserId({ userId }) {
     const supabase = createClient();
     const { data: greenhouses, error: greenhousesError } = await supabase
         .from('greenhouse')

@@ -1,11 +1,9 @@
 'use client';
 
-import Image from 'next/image';
+import { Suspense } from 'react';
 import Link from 'next/link';
 
 import dateLibs from "@/lib/date";
-
-import greenhouseImage from "./../../../public/greenhouse.png";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -18,15 +16,18 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { HomeSection } from '@/components/section/Section';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '../ui/skeleton';
 
 import { HomeLogoutBtn } from '@/components/custom/HomeLogoutBtn';
-import { EmptyTabContent } from './EmptyTabContent';
+import { GreenhouseGridList } from './GreenhouseGridList';
 
-import { DrawingPinFilledIcon, BlendingModeIcon, CubeIcon, HobbyKnifeIcon, ScissorsIcon, SunIcon } from '@radix-ui/react-icons';
+import { BlendingModeIcon, CubeIcon, HobbyKnifeIcon, ScissorsIcon, SunIcon } from '@radix-ui/react-icons';
+import { toast } from 'sonner';
 
 
-export default function HomePage({ user, greenhouses }) {
+export default function HomePage({ user }) {
     const { getCurrentDate } = dateLibs();
+    console.log(user);
 
     return(
         <>
@@ -79,14 +80,15 @@ export default function HomePage({ user, greenhouses }) {
                     </h4>
 
                     <div className='w-full flex flex-row gap-x-2 justify-between items-center'>
-                        <Link href="/" className='w-1/4'>
-                            <Button variant='outline' className='w-full h-auto aspect-square flex-col gap-y-2 hover:bg-primary hover:scale-105 hover:text-white transition-all'>
+                        <Button 
+                            variant='outline' 
+                            onClick={() => toast.info("Fitur Masih Dalam Tahap Pengembangan")}
+                            className='w-1/4 h-auto aspect-square flex-col gap-y-2 hover:bg-primary hover:scale-105 hover:text-white transition-all'>
                                 <BlendingModeIcon className='' fill='#16a34a' width={20} height={20}/>
                                 <h4 className="scroll-m-20 text-sm md:text-lg font-medium tracking-tight">
-                                    Kontrol
+                                        Kontrol
                                 </h4>
                             </Button>
-                        </Link>
                         <Link href="/greenhouse/pilih?catat=tanam" className='w-1/4'>
                             <Button variant='outline' className='w-full h-auto aspect-square flex-col gap-y-2 hover:bg-primary hover:scale-105 hover:text-white transition-all'>
                                 <HobbyKnifeIcon clascolor="#16a34a"width={20} height={20}/>
@@ -119,36 +121,9 @@ export default function HomePage({ user, greenhouses }) {
                         Daftar Greenhouse 🏡
                     </h4>
 
-                    <section className={`w-full h-full md:justify-center overflow-y-auto ${greenhouses.length === 0 ? '' : 'grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-5'}`} >
-                        {greenhouses.length === 0 ? (
-                            <EmptyTabContent 
-                                title='data Greenhouse tercatat'
-                                url='/auth/register/greenhouse'
-                                btnPlaceholder='Tambahkan Greenhouse disini'
-                            />
-                            ) : (
-                                greenhouses.map((greenhouse, i) => (
-                                    <Link href={`/greenhouse/${greenhouse.id}`} key={i}>
-                                        <Card className="w-full pt-6" >
-                                            <CardContent className=''>
-                                                <Image
-                                                src={greenhouseImage}
-                                                alt="Greenhouse Image"
-                                                className="w-full object-cover hover:scale-105 transition-all rounded-lg"
-                                                width={200}
-                                                height={200}
-                                                />
-                                            </CardContent>
-                                            <CardFooter className='flex-col w-full gap-y-2'>
-                                                <CardTitle className="w-full ">{greenhouse.nama_gh}</CardTitle>
-                                                <CardDescription className='w-full flex items-center gap-x-2'><DrawingPinFilledIcon/> {greenhouse.lokasi}</CardDescription>
-                                            </CardFooter>
-                                        </Card>
-                                    </Link>
-                                ))
-                            )
-                        }
-                    </section>
+                    <Suspense fallback={<Skeleton className="w-full h-full rounded-2xl"/>}>
+                        <GreenhouseGridList userId={user.user.id}/>
+                    </Suspense>
                 </HomeSection>
             </div>
         </>
