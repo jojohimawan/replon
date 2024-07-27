@@ -22,10 +22,10 @@ export async function GreenhouseGridList(userId) {
 
   return (
     <section
-      className={`w-full h-full md:justify-center overflow-y-auto ${
+      className={`w-full h-full overflow-y-auto ${
         greenhouses.length === 0
           ? ""
-          : "grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-5"
+          : "grid grid-cols-1 gap-y-3"
       }`}
     >
       {greenhouses.length === 0 ? (
@@ -37,7 +37,7 @@ export async function GreenhouseGridList(userId) {
       ) : (
         greenhouses.map((greenhouse, i) => (
           <Link href={`/greenhouse/${greenhouse.id}`} key={i}>
-            <Card className="w-full pt-6">
+            <Card className="w-full pt-6 flex">
               <CardContent className="">
                 <Image
                   src={greenhouseImage}
@@ -47,7 +47,7 @@ export async function GreenhouseGridList(userId) {
                   height={200}
                 />
               </CardContent>
-              <CardFooter className="flex-col w-full gap-y-2">
+              <CardFooter className="flex-col w-full justify-center gap-y-2">
                 <CardTitle className="w-full ">{greenhouse.nama_gh}</CardTitle>
                 <CardDescription className="w-full flex items-center gap-x-2">
                   <DrawingPinFilledIcon /> {greenhouse.lokasi}
