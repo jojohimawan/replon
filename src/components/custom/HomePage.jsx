@@ -20,6 +20,7 @@ import { Skeleton } from '../ui/skeleton';
 
 import { HomeLogoutBtn } from '@/components/custom/HomeLogoutBtn';
 import { GreenhouseGridList } from './GreenhouseGridList';
+import { WeatherCard } from './WeatherCard';
 
 import { BlendingModeIcon, CubeIcon, HobbyKnifeIcon, ScissorsIcon, SunIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
@@ -57,21 +58,9 @@ export default function HomePage({ user }) {
                         Cuaca Hari Ini 🌄
                     </h4>
 
-                    <Card className='w-full bg-primary'>
-                        <CardContent className='flex flex-row justify-between items-center pt-6 text-white'>
-                            <div className='flex flex-col h-full gap-y-2'>
-                                <CardDescription className='text-sm font-light leading-none text-white'>Blitar, Jawa Timur</CardDescription>
-                                <CardTitle className='scroll-m-20 text-2xl font-semibold tracking-tight '>25 C</CardTitle>
-                                <CardDescription className='text-white'>Kelembapan 64%</CardDescription>
-                            </div>
-
-                            <SunIcon width={32} height={32} className='animate-bounce'/>
-                        </CardContent>
-                        <CardFooter className='w-full flex-col gap-y-2'>
-                            <Separator />
-                            <CardDescription className='w-full text-white'>Disarankan untuk melakukan penyiraman tanaman</CardDescription>
-                        </CardFooter>
-                    </Card>
+                    <Suspense fallback={<Skeleton className="w-full h-24 rounded-2xl"/>}>
+                        <WeatherCard/>
+                    </Suspense>
                 </section>
 
                 <section className='w-full flex flex-col gap-y-3 mb-10'>
