@@ -10,6 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { DrawingPinFilledIcon } from '@radix-ui/react-icons';
+import {EmptyTabContent} from "@/components/custom/EmptyTabContent";
 
 const Pilih = async ({ searchParams }) => {
     if(!searchParams.catat) {
@@ -43,19 +44,27 @@ const Pilih = async ({ searchParams }) => {
 
                 <div className="w-full h-full overflow-y-auto">
                     <div className="w-full flex flex-col gap-y-3">
-                        {
-                            greenhouses.map((greenhouse, i) => (
-                                <Link key={i} href={`/${searchParams.catat}/${greenhouse.id}`}>
-                                    <Card className="w-full pt-6 hover:bg-green-50 hover:border-primary hover:shadow-md transition-all active:bg-green-50">
-                                        <CardContent className="flex flex-col justify-center gap-y-3">
-                                            <CardTitle>
-                                                {greenhouse.nama_gh}
-                                            </CardTitle>
-                                            <CardDescription className='w-full flex items-center gap-x-2'><DrawingPinFilledIcon/> {greenhouse.lokasi}</CardDescription>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            ))
+                        { greenhouses.length === 0 ? (
+                                <EmptyTabContent
+                                    title="data Greenhouse tercatat"
+                                    url="/auth/register/greenhouse"
+                                    btnPlaceholder="Tambahkan Greenhouse disini"
+                                />
+                            ) :
+                            (
+                                greenhouses.map((greenhouse, i) => (
+                                    <Link key={i} href={`/${searchParams.catat}/${greenhouse.id}`}>
+                                        <Card className="w-full pt-6 hover:bg-green-50 hover:border-primary hover:shadow-md transition-all active:bg-green-50">
+                                            <CardContent className="flex flex-col justify-center gap-y-3">
+                                                <CardTitle>
+                                                    {greenhouse.nama_gh}
+                                                </CardTitle>
+                                                <CardDescription className='w-full flex items-center gap-x-2'><DrawingPinFilledIcon/> {greenhouse.lokasi}</CardDescription>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                ))
+                            )
                         }
                     </div>
                 </div>

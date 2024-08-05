@@ -1,6 +1,7 @@
 'use client';
 
-import Image from "next/image";
+import { useState } from "react";
+
 import { useParams } from "next/navigation";
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -20,7 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ChevronLeftIcon, DrawingPinFilledIcon, PlusIcon, MinusIcon } from "@radix-ui/react-icons";
+import {PlusIcon, MinusIcon, ReloadIcon} from "@radix-ui/react-icons";
 import {
     Select,
     SelectContent,
@@ -31,8 +32,6 @@ import {
 
 import FormHeader from "./FormHeader";
 
-import greenhouse from "./../../../public/greenhouse.png";
-
 const penyakitSchema = z.object({
     id_penyakit: z.number().min(1, { message: 'Penyakit / hama tidak boleh kosong' })
 });
@@ -42,6 +41,7 @@ const formSchema = z.object({
 });
 
 export default function EventPenyakitForm({ penyakitData, greenhouseData }) {
+    const [isLoading, setIsLoading] = useState(false);
     const params = useParams();
 
     const { control, handleSubmit } = useForm({
@@ -57,6 +57,7 @@ export default function EventPenyakitForm({ penyakitData, greenhouseData }) {
     });
 
     const onSubmit = async (formData) => {
+        setIsLoading(true);
         const penyakitData = formData.penyakits.map(data => ({
             ...data,
             id_gh: Number(params.greenhouseId)
@@ -65,6 +66,7 @@ export default function EventPenyakitForm({ penyakitData, greenhouseData }) {
         console.log(penyakitData);
         
         await insertEventPenyakit(penyakitData);
+        setIsLoading(false);
     }
 
     return (
@@ -122,7 +124,16 @@ export default function EventPenyakitForm({ penyakitData, greenhouseData }) {
                                 >
                                     <PlusIcon /> &emsp;Tambah Penyakit
                                 </Button>
-                                <Button type="submit" className="w-full mt-4">Catat Event Penyakit / Hama</Button>
+                                <Button disabled={isLoading} type="submit" className="w-full mt-4">
+                                    {isLoading ? (
+                                        <>
+                                            Mohon tunggu &emsp; <ReloadIcon className="animate-spin" />
+                                        </>
+                                    ) : (
+                                        'Catat Event Penyakit Hama'
+                                    )
+                                    }
+                                </Button>
                             </form>
                         </Form>
                     </div>

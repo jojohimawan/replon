@@ -117,7 +117,7 @@ const Greenhouse = () => {
                         >
                             <PlusIcon /> &emsp;Tambah Greenhouse
                         </Button>
-                        <Button type="submit" className="w-full mt-4">
+                        <Button disabled={isLoading} type="submit" className="w-full mt-4">
                         {isLoading ? (
                         <>
                             Mohon tunggu &emsp; <ReloadIcon className="animate-spin" /> 

@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from "react";
+
 import { useParams } from "next/navigation";
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -20,7 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
+import {PlusIcon, MinusIcon, ReloadIcon} from "@radix-ui/react-icons";
 import {
     Select,
     SelectContent,
@@ -41,6 +43,7 @@ const formSchema = z.object({
 });
 
 export default function PanenForm({ varietasData, greenhouseData }) {
+    const [isLoading, setIsLoading] = useState(false);
     const params = useParams();
 
     const { control, handleSubmit } = useForm({
@@ -56,6 +59,7 @@ export default function PanenForm({ varietasData, greenhouseData }) {
     });
 
     const onSubmit = async (formData) => {
+        setIsLoading(true);
         const panenData = formData.panens.map(data => ({
             ...data,
             id_gh: Number(params.greenhouseId)
@@ -64,6 +68,7 @@ export default function PanenForm({ varietasData, greenhouseData }) {
         console.log(panenData);
         
         await insertPanen(panenData);
+        setIsLoading(false);
     }
 
     return (
@@ -143,7 +148,16 @@ export default function PanenForm({ varietasData, greenhouseData }) {
                                 >
                                     <PlusIcon /> &emsp;Tambah Varietas
                                 </Button>
-                                <Button type="submit" className="w-full mt-4">Catat Event Panen</Button>
+                                <Button disabled={isLoading} type="submit" className="w-full mt-4">
+                                    {isLoading ? (
+                                        <>
+                                            Mohon tunggu &emsp; <ReloadIcon className="animate-spin" />
+                                        </>
+                                    ) : (
+                                        'Catat Event Panen'
+                                    )
+                                    }
+                                </Button>
                             </form>
                         </Form>
                     </div>
