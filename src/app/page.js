@@ -1,13 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import heroSvg from "@/assets/hero_farm.svg"
+import heroSvg from "@/assets/hero_pic.svg"
+import logo from './../../public/logo.png'
 import { Button } from "@/components/ui/button";
 
 export default async function App() {
   return (
     <>
-      <p className="text-xl font-bold text-center">🍈 Replon App</p>
+    <div className="w-full flex gap-x-2 items-center justify-center">
+    <Image 
+        src={logo}
+        width={20}
+        height={20}
+        alt="Logo"
+      />
+    <p className="text-xl font-bold text-center">Replon App</p>
+    </div>
 
       <Image 
         src={heroSvg}

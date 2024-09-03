@@ -1,4 +1,3 @@
-
 import { SunIcon } from "@radix-ui/react-icons";
 
 import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
@@ -6,16 +5,16 @@ import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
 export async function WeatherCard() {
   const weather = await fetchWeatherData();
 
-  if(!weather) {
+  if (!weather) {
     return (
       <div className="w-full h-24 flex items-center justify-center border border-input rounded-2xl">
-            Data cuaca tidak tersedia
+        Data cuaca tidak tersedia
       </div>
-    )
+    );
   }
 
   return (
-        <Card className="w-full bg-primary">
+    <Card className="w-full bg-primary">
       <CardContent className="flex flex-row justify-between items-center pt-6 text-white">
         <div className="flex flex-col gap-y-5 w-full">
           <div className="flex justify-between">
@@ -37,7 +36,7 @@ export async function WeatherCard() {
             <div className="grid grid-cols-3 w-3/4 gap-y-3">
               <div className="flex flex-col gap-y-2 text-center">
                 <CardDescription className="text-xs lg:text-md font-light leading-none text-white">
-                  Kelembapan
+                  Kelembaban
                 </CardDescription>
                 <CardDescription className="text-xs lg:text-md font-medium leading-none text-white">
                   {`${weather.main.humidity} %`}
@@ -70,8 +69,8 @@ export async function WeatherCard() {
 async function fetchWeatherData() {
   const response = await fetch(`/api/weather`);
 
-  if(!response.ok) {
-    console.error('[WEATHER] Failed to fetch route');
+  if (!response.ok) {
+    console.error("[WEATHER] Failed to fetch route");
     return;
   }
 
