@@ -11,8 +11,8 @@ export default async function App() {
     <div className="w-full flex gap-x-2 items-center justify-center">
     <Image 
         src={logo}
-        width={20}
-        height={20}
+        width={32}
+        height={32}
         alt="Logo"
       />
     <p className="text-xl font-bold text-center">Replon App</p>
@@ -26,8 +26,8 @@ export default async function App() {
       />
 
       <div className="flex flex-col gap-y-2 w-full items-center">
-        <h1 className="text-3xl font-bold text-center">Selamat Datang di  Aplikasi Replon</h1>
-        <p className="text-center text-slate-500">Aplikasi untuk membantu petani dalam mengelola lahan pertanian</p>
+        <h1 className="text-3xl font-bold text-center">Selamat Datang di  Aplikasi Petani</h1>
+        <p className="text-center text-slate-500">Aplikasi untuk membantu petani dalam mengelola Greenhouse</p>
       </div>
       
       <div className="flex flex-col gap-y-3 w-full">
