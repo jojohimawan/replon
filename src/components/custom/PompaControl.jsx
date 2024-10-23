@@ -2,11 +2,6 @@
 
 import { CardDescription } from "../ui/card";
 import { Button } from "../ui/button";
-import { LoadingUI } from "./LoadingUI";
-import {
-  fetchLatestPompaState,
-  insertPompa,
-} from "@/utils/supabase/dashboardQueries";
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -34,22 +29,13 @@ export function PompaControl({ nodeId }) {
 
       fetchPompa();
     }
-
-    //async function fetchPompa() {
-    // try {
-    //   const data = await fetchLatestPompaState(nodeId);
-    //   setPompaState(data);
-    // } catch (error) {
-    //   toast.warning("Gagal mengambil data pompa");
-    // }
-    //}
   }, [nodeId]);
 
   const handleClick = useCallback(async () => {
     setLoading(true);
     const requestPayload = {
       payload: !pompaState[0]?.status_pompa,
-      nodeid: nodeId, // Capture the latest nodeId
+      nodeid: nodeId,
     };
 
     try {
@@ -60,12 +46,11 @@ export function PompaControl({ nodeId }) {
         },
         body: JSON.stringify({
           payload: requestPayload.payload,
-          nodeId: requestPayload.nodeid, // Ensure nodeId is passed correctly here
+          nodeId: requestPayload.nodeid,
         }),
       });
       const data = await res.json();
       setPompaState([data[0]]);
-      console.log(`handleClick result:`, data);
     } catch (error) {
       toast.warning("Gagal, mohon coba lagi");
     } finally {
