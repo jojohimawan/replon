@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="">
       <body className={`${inter.className} bg-slate-200`}>
-      <main className="flex h-screen flex-col items-center justify-between px-5 py-4 bg-white md:max-w-[640px] md:mx-auto">
+      <main className="flex h-dvh flex-col items-center justify-between px-5 py-4 bg-white md:max-w-[640px] md:mx-auto">
         {children}
         <Toaster position="bottom-center" richColors />
         <SpeedInsights />

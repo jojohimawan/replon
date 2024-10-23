@@ -30,3 +30,33 @@ export function createClient() {
         }
     )
 }
+
+export function createDashboard() {
+    const cookieStore = cookies();
+
+    return createServerClient(
+        process.env.NEXT_PUBLIC_DASHBOARD_URL,
+        process.env.NEXT_PUBLIC_DASHBOARD_ANON_KEY,
+        {
+            cookies: {
+                getAll() {
+                    try {
+                        return cookieStore.getAll();
+                    } catch (error) {
+                        console.error("Error getting cookies:", error);
+                        return [];
+                    }
+                },
+                setAll(cookiesToSet) {
+                    try {
+                        cookiesToSet.forEach(({ name, value, options }) => 
+                            cookieStore.set(name, value, options)
+                        )
+                    } catch (error) {
+                        console.error("Error setting cookies:", error);
+                    }
+                }
+            }
+        }
+    );
+}

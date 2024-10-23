@@ -133,7 +133,7 @@ export default function PanenForm({ varietasData, greenhouseData }) {
                       name={`panens.${index}.jumlah_produksi`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Jumlah Panen</FormLabel>
+                          <FormLabel>{`Jumlah Panen (KG)`}</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Jumlah Panen varietas ini"

@@ -40,8 +40,6 @@ import { EmptyTabContent } from "@/components/custom/EmptyTabContent";
 
 import greenhouse from "../../../../public/greenhouse.png";
 
-import { GreenhouseSwitch } from "@/components/custom/GreenhouseSwitch";
-
 export default async function GreenhousePage({ params }) {
     const greenhouseData = await fetchGreenhouseById(params.greenhouseId);
 
@@ -97,23 +95,6 @@ export default async function GreenhousePage({ params }) {
                     </div>
                 </section>
 
-                <section className="w-full">
-                    <Card className='w-full group hover:bg-green-500'>
-                        <CardContent className='flex flex-row justify-between items-center pt-6 text-white'>
-                            <div className='flex flex-col h-full gap-y-2'>
-                                <div className="p-4 text-xl bg-green-50 text-primary max-w-max rounded-full">
-                                    <BlendingModeIcon />
-                                </div>
-                                <CardTitle className='scroll-m-20 text-2xl font-semibold tracking-tight text-primary group-hover:text-white'>Kontrol Keran Air</CardTitle>
-                                <CardDescription className='text-slate-500 group-hover:text-white'>Status: Mati</CardDescription>
-                            </div>
-
-                            <GreenhouseSwitch switchProps={false}/>
-
-                        </CardContent>
-                    </Card>
-                </section>
-
                 <section className="w-full overflow-hidden h-full">
                     <Tabs defaultValue="tanam" className="w-full h-full">
                         <TabsList className="grid grid-cols-3">
@@ -135,6 +116,7 @@ export default async function GreenhousePage({ params }) {
                                             title={tanam.varietas.nama_varietas} 
                                             count={tanam.jumlah_tanaman} 
                                             time={formatDateTime(tanam.waktu_tanam)} 
+                                            unit={'benih'}
                                         />
                                     ))
                                 )
@@ -154,6 +136,7 @@ export default async function GreenhousePage({ params }) {
                                             title={panen.varietas.nama_varietas}
                                             count={panen.jumlah_produksi}
                                             time={formatDateTime(panen.waktu_panen)}
+                                            unit={'KG'}
                                         />
                                     ))
                                 )
