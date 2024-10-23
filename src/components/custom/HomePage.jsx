@@ -66,21 +66,22 @@ export default function HomePage({ user }) {
           </h4>
 
           <div className="w-full flex flex-row gap-x-2 justify-between items-center">
-            <Button
-              variant="outline"
-              onClick={() => toast.info("Fitur Masih Dalam Tahap Pengembangan")}
-              className="w-1/4 h-auto aspect-square flex-col gap-y-2 hover:bg-primary hover:scale-105 hover:text-white transition-all"
-            >
-              <Image
-                src={watering}
-                width={24}
-                height={24}
-                alt="Kontrol Pompa"
-              />
-              <h4 className="scroll-m-20 text-sm md:text-lg font-bold tracking-tight">
-                Pompa
-              </h4>
-            </Button>
+            <Link href="/pompa" className="w-1/4">
+              <Button
+                variant="outline"
+                className="w-full h-auto aspect-square flex-col gap-y-2 hover:bg-primary hover:scale-105 hover:text-white transition-all"
+              >
+                <Image
+                  src={watering}
+                  width={24}
+                  height={24}
+                  alt="Kontrol Pompa"
+                />
+                <h4 className="scroll-m-20 text-sm md:text-lg font-bold tracking-tight">
+                  Pompa
+                </h4>
+              </Button>
+            </Link>
             <Link href="/greenhouse/pilih?catat=tanam" className="w-1/4">
               <Button
                 variant="outline"

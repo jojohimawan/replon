@@ -132,7 +132,7 @@ export default function TanamForm({ varietasData, greenhouseData }) {
                       name={`tanams.${index}.jumlah_tanaman`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Jumlah Tanaman</FormLabel>
+                          <FormLabel>Jumlah Benih</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Jumlah Tanaman varietas ini"

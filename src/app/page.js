@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import heroSvg from "@/assets/hero_pic.svg"
+import heroSvg from "@/assets/hero_pic.jpg"
 import logo from './../../public/logo.png'
 import { Button } from "@/components/ui/button";
 
