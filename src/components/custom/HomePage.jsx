@@ -15,18 +15,10 @@ import { HomeLogoutBtn } from "@/components/custom/HomeLogoutBtn";
 import { GreenhouseGridList } from "./GreenhouseGridList";
 import { WeatherCard } from "./WeatherCard";
 
-import {
-  BlendingModeIcon,
-  BarChartIcon,
-  PieChartIcon,
-} from "@radix-ui/react-icons";
-import { toast } from "sonner";
-
 import hama from "@/assets/hama.svg";
 import sekop from "@/assets/sekop.svg";
 import tanam from "@/assets/tanam.svg";
 import watering from "@/assets/watering.svg";
-import { Card, CardContent } from "../ui/card";
 
 export default function HomePage({ user }) {
   const { getCurrentDate } = dateLibs();
@@ -63,21 +55,6 @@ export default function HomePage({ user }) {
           <Suspense fallback={<Skeleton className="w-full h-24 rounded-2xl" />}>
             <WeatherCard />
           </Suspense>
-
-          <Card className="shadow-none">
-            <CardContent className="p-6 flex items-center space-x-4 rounded-md border">
-              <PieChartIcon />
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  Dashboard Petani
-                </p>
-                <p className="text-sm text-muted-foreground">Data greenhouse</p>
-              </div>
-              <Link href="https://petani.dashboardreplon.id/">
-                <Button>Buka dashboard</Button>
-              </Link>
-            </CardContent>
-          </Card>
         </section>
 
         <section className="w-full flex flex-col gap-y-3 mb-10">
