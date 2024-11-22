@@ -5,16 +5,25 @@ import { Button } from "../ui/button";
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { fetchGreenhouseByUserId } from "@/utils/supabase/queries";
 
-export function PompaControl({ nodeId }) {
+export function PompaControl({ nodeId, user }) {
   const [pompaState, setPompaState] = useState([]);
+  const [greenhouse, setGreenhouse] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(user);
     if (nodeId) {
       async function fetchPompa() {
         setLoading(true);
         try {
+          const gh = await fetchGreenhouseByUserId({
+            userId: user,
+          });
+          setGreenhouse(gh);
+          console.log(greenhouse);
+
           const res = await fetch(
             `${process.env.BASE_URL}/api/pompa/${nodeId}`
           );
@@ -78,7 +87,7 @@ export function PompaControl({ nodeId }) {
 
       <Button
         onClick={handleClick}
-        disabled={loading}
+        disabled={loading || nodeId !== greenhouse[0].id}
         className={`w-full ${
           pompaState[0]?.status_pompa
             ? "bg-red-500 hover:bg-red-400"

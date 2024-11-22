@@ -1,4 +1,7 @@
+'use client'
+
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +13,36 @@ import { ChevronLeftIcon, BlendingModeIcon } from "@radix-ui/react-icons";
 
 import { PompaControl } from "@/components/custom/PompaControl";
 
+import { getUser } from "@/utils/supabase/auth";
+import { fetchGreenhouseByUserId } from "@/utils/supabase/queries";
+import { LoadingUI } from "@/components/custom/LoadingUI";
+
 export default function PompaPage() {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const user = await getUser();
+                setUser(user);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (loading) {
+        return <LoadingUI />;
+    }
+
+    if (!user) {
+        return <div>No data found</div>;
+    }
 
     return(
         <>
@@ -38,7 +70,7 @@ export default function PompaPage() {
                                             <CardTitle className='scroll-m-20 text-md md:text-2xl font-semibold tracking-tight text-primary'>{`Pompa Node ${index + 1}`}</CardTitle>
                                         </div>
 
-                                        <PompaControl nodeId={index + 1}/>
+                                        <PompaControl nodeId={index + 1} user={user.user.id}/>
 
                                     </CardContent>
                                 </Card>
